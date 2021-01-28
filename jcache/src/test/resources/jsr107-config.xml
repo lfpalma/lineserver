@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<config
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.ehcache.org/v3"
+        xsi:schemaLocation="http://www.ehcache.org/v3 http://www.ehcache.org/schema/ehcache-core-3.0.xsd">
+    <persistence directory="${java.io.tmpdir}"/>
+    <cache alias="fileLineIndexCache">
+        <key-type>java.lang.Long</key-type>
+        <value-type>com.salsify.lineserver.file.FileLineIndexEntry</value-type>
+        <resources>
+            <heap unit="entries">100</heap>
+            <offheap unit="MB">16</offheap>
+            <disk unit="GB">10</disk>
+        </resources>
+    </cache>
+</config>
