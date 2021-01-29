@@ -1,4 +1,5 @@
 rootProject.name = 'lineserver'
 include 'core'
 include 'jcache'
+include 'web'
 
