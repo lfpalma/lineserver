@@ -1,5 +1,6 @@
 package com.salsify.web.services.lines;
 
+import com.salsify.lineserver.LineReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -7,16 +8,23 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(path = "/lines")
 public class LinesServiceController {
 
-    private LinesServiceConfiguration.Impl impl;
+    private final LineReader lineReader;
 
     @Autowired
-    protected LinesServiceController(LinesServiceConfiguration.Impl impl) {
-        this.impl = impl;
+    protected LinesServiceController(LineReader lineReader) {
+        this.lineReader = lineReader;
     }
 
     @GetMapping(path = "/{index}")
     public @ResponseBody String getLine(@PathVariable long index) {
-        LinesServiceErrorPolicy.getDefault().handleException(new Exception(impl.getLine()));
-        return "Hello world";
+
+        try {
+            return lineReader.readLine(index);
+        }
+        catch(Exception e) {
+            throw LinesServiceErrorPolicy
+                    .getDefault()
+                    .handleException(e);
+        }
     }
 }

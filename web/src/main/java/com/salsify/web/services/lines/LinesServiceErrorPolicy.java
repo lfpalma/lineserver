@@ -9,15 +9,15 @@ public abstract class LinesServiceErrorPolicy {
     public static LinesServiceErrorPolicy getDefault() {
         return new LinesServiceErrorPolicy() {
             @Override
-            public void handleException(Exception e) {
+            public LinesServiceException handleException(Exception e) {
                 LinesServiceErrorPolicy
                         .logger
                         .error(e.getMessage(), e);
 
-                throw new LinesServiceException.LineNotFoundException();
+                return new LinesServiceException();
             }
         };
     }
 
-    public abstract void handleException(Exception e);
+    public abstract LinesServiceException handleException(Exception e);
 }
