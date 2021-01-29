@@ -9,7 +9,9 @@ Using ehcache allows having files with a large amount of lines to index because 
 The file reading is delegated on an abstraction `FileReader` which is, in this case, implemented as a `FileChannelReader`. Using a java.nio.channel allows this solution to be multi-threaded and if more than one request wants to read different parts of the file they do not block each other.
 
 For the rest service the it uses [Spring Boot](https://spring.io/projects/spring-boot) with its `spring-boot-starter-web`.
-  
+ 
+To see it in action use `http://localhost:8080/lines/{index}`
+ 
 ## How will the system perform with a 1 GB file? a 10 GB file? a 100 GB file?
 The system will perform well even with big files. It can have performance degradation but it's not due to the size of the file itself but due to the number of lines that may make the index grow and span to the disk.
 
