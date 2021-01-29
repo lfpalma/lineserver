@@ -7,7 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -23,6 +26,7 @@ public class LinesServiceConfiguration {
     }
 
     @Bean
+    @Profile("production")
     public LineReader getLineReader() {
 
         try {
@@ -57,8 +61,31 @@ public class LinesServiceConfiguration {
         List<String> nonOptionArguments = args.getNonOptionArgs();
 
         if (nonOptionArguments.size() != 1)
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("No file provided.");
 
         return nonOptionArguments.get(0);
+    }
+
+    @Bean
+    @Profile("test")
+    public LineReader getTestLineReader() {
+        try {
+            Path pathToFile = getResourcePath(getClass(), "small-file");
+            FileLineIndex<FileLineIndexEntry> fileLineIndex = new JCacheFileLineIndex<>();
+            return new IndexedFileLineReader(
+                    fileLineIndex,
+                    FileChannelReader.create(
+                            pathToFile, StandardCharsets.US_ASCII));
+        } catch (Exception e) {
+            throw
+                    LinesServiceErrorPolicy.getDefault().handleException(e);
+        }
+    }
+
+    private <T> Path getResourcePath(Class<T> cls, String resourceName)
+            throws URISyntaxException {
+
+        URL resourceURL = cls.getClassLoader().getResource(resourceName);
+        return Paths.get(resourceURL.toURI());
     }
 }
