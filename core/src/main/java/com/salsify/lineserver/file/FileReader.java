@@ -10,19 +10,23 @@ public abstract class FileReader implements Closeable {
     public String readLine()
             throws FileReaderException {
 
-        StringBuilder result = new StringBuilder();
-
         Character c = read();
-        while(isNotEndOfLine(c) && isNotEndOfFile(c)) {
-            result.append(c);
-            c = read();
+
+        if(isNotEndOfFile(c)) {
+            StringBuilder result = new StringBuilder();
+
+            while (isNotEndOfLine(c)) {
+                result.append(c);
+                c = read();
+            }
+            return result.toString();
         }
 
-        return result.toString();
+        return null;
     }
 
     private boolean isNotEndOfLine(Character c) {
-        return c != '\n';
+        return isNotEndOfFile(c) && c != '\n' ;
     }
 
     private boolean isNotEndOfFile(Character c) {
@@ -37,6 +41,8 @@ public abstract class FileReader implements Closeable {
 
     public abstract String read(long startPosition, long endPosition)
             throws FileReaderException;
+
+    public abstract void rewind() throws FileReaderException;
 
     public abstract void close()
             throws IOException;

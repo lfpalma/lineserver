@@ -26,6 +26,15 @@ public abstract class FileReaderTests {
     }
 
     @Test
+    void testReadAllLines() {
+        Assertions.assertDoesNotThrow(
+                () -> {
+                    FileReader reader = create(TestHelper.getResourcePath(getClass(), "small-file"));
+                    while (reader.readLine() != null) ;
+                });
+    }
+
+    @Test
     void testFilePointerAfterReadFirstLine()
             throws Exception {
 

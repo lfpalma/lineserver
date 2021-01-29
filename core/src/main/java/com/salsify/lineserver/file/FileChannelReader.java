@@ -1,6 +1,5 @@
 package com.salsify.lineserver.file;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
@@ -41,10 +40,14 @@ public class FileChannelReader extends FileReader {
             throws FileReaderException {
 
         try {
-            return fileChannelPointer + readerBuffer.position();
+            return fileChannelPointer + getReaderBufferPosition();
         } catch (Exception e) {
             throw new FileReaderException("Could not get file channel position", e);
         }
+    }
+
+    private long getReaderBufferPosition() {
+        return readerBuffer == null? 0 : readerBuffer.position();
     }
 
     @Override
@@ -109,6 +112,18 @@ public class FileChannelReader extends FileReader {
             return result;
         } catch (Exception e) {
             throw new FileReaderException("Could not read start position to end position from channel", e);
+        }
+    }
+
+    @Override
+    public void rewind()
+            throws FileReaderException {
+
+        try {
+            fileChannel.position(0);
+        }
+        catch(Exception e) {
+            throw new FileReaderException("Could not rewind the reader", e);
         }
     }
 

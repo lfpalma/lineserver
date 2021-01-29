@@ -1,7 +1,5 @@
 package com.salsify.lineserver.file;
 
-import org.junit.jupiter.api.Test;
-
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 
