@@ -7,6 +7,7 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Profile;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -39,6 +40,17 @@ class LinesServerApplicationTests {
 						get("/lines/1"))
 				.andExpect(
 						status().isOk());
+	}
+
+	@Test
+	void testInvalidLine()
+			throws Exception {
+
+		this.mockMvc
+				.perform(
+						get("/lines/100"))
+				.andExpect(
+						status().is(HttpStatus.PAYLOAD_TOO_LARGE.value()));
 	}
 
 	@Test

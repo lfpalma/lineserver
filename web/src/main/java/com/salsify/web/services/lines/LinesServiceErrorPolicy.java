@@ -1,5 +1,6 @@
 package com.salsify.web.services.lines;
 
+import com.salsify.lineserver.file.FileReaderException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,6 +14,9 @@ public abstract class LinesServiceErrorPolicy {
                 LinesServiceErrorPolicy
                         .logger
                         .error(e.getMessage(), e);
+
+                if (e instanceof FileReaderException.LineNotFound)
+                    return new LinesServiceException.LineNotFoundException();
 
                 return new LinesServiceException();
             }

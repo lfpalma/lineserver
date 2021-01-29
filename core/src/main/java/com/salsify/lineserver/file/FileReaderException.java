@@ -10,4 +10,6 @@ public class FileReaderException extends Exception {
     public FileReaderException(String message, Throwable cause) {
         super(message, cause);
     }
+
+    public static class LineNotFound extends FileReaderException { }
 }

@@ -40,6 +40,8 @@ public class IndexedFileLineReader implements LineReader {
             throws FileReaderException {
 
         FileLineIndexEntry entry = fileLineIndex.get(index);
+        if (entry == null)
+            throw new FileReaderException.LineNotFound();
 
         return fileReader.read(entry.getStartPosition(), entry.getEndPosition());
     }
