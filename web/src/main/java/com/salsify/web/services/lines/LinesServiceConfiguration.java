@@ -26,7 +26,7 @@ public class LinesServiceConfiguration {
     }
 
     @Bean
-    @Profile("production")
+    @Profile("!test")
     public LineReader getLineReader() {
 
         try {
